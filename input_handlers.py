@@ -24,9 +24,9 @@ def handle_keys(key) -> [Action, None]:
     elif key == tcod.event.K_u:
         action = Action(ActionType.MOVEMENT, dx=1, dy=-1)
     elif key == tcod.event.K_b:
-        action = Action(ActionType.MOVEMENT, dx=-1, dy=-1)
+        action = Action(ActionType.MOVEMENT, dx=-1, dy=1)
     elif key == tcod.event.K_n:
-        action = Action(ActionType.MOVEMENT, dx=1, dy=-1)
+        action = Action(ActionType.MOVEMENT, dx=1, dy=1)
 
     elif key == tcod.event.K_ESCAPE:
         action = Action(ActionType.ESCAPE)

@@ -3,6 +3,7 @@ import tcod
 from actions import Action, ActionType
 from input_handlers import handle_keys
 
+
 def main():
     # Variables for screen dimensions
     screen_width: int = 80

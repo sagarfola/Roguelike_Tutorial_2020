@@ -11,21 +11,21 @@ def handle_keys(key) -> [Action, None]:
     action: [Action, None] = None
 
     # Movement Keys
-    if key == tcod.event.K_UP:
+    if key == tcod.event.K_UP or key == tcod.event.K_KP_8:
         action = Action(ActionType.MOVEMENT, dx=0, dy=-1)
-    elif key == tcod.event.K_DOWN:
+    elif key == tcod.event.K_DOWN or key == tcod.event.K_KP_2:
         action = Action(ActionType.MOVEMENT, dx=0, dy=1)
-    elif key == tcod.event.K_LEFT:
+    elif key == tcod.event.K_LEFT or key == tcod.event.K_KP_4:
         action = Action(ActionType.MOVEMENT, dx=-1, dy=0)
-    elif key == tcod.event.K_RIGHT:
+    elif key == tcod.event.K_RIGHT or key == tcod.event.K_KP_6:
         action = Action(ActionType.MOVEMENT, dx=1, dy=0)
-    elif key == tcod.event.K_y:
+    elif key == tcod.event.K_y or key == tcod.event.K_KP_7:
         action = Action(ActionType.MOVEMENT, dx=-1, dy=-1)
-    elif key == tcod.event.K_u:
+    elif key == tcod.event.K_u or key == tcod.event.K_KP_9:
         action = Action(ActionType.MOVEMENT, dx=1, dy=-1)
-    elif key == tcod.event.K_b:
+    elif key == tcod.event.K_b or key == tcod.event.K_KP_1:
         action = Action(ActionType.MOVEMENT, dx=-1, dy=1)
-    elif key == tcod.event.K_n:
+    elif key == tcod.event.K_n or key == tcod.event.K_KP_3:
         action = Action(ActionType.MOVEMENT, dx=1, dy=1)
 
     elif key == tcod.event.K_ESCAPE:

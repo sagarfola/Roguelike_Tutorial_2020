@@ -13,8 +13,7 @@ def main():
     player_y: int = int(screen_height/2)
 
     # Sets the custom font based on the file
-    # TODO place file in its own data folder
-    tcod.console_set_custom_font("arial10x10.png", tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
+    tcod.console_set_custom_font("data/arial10x10.png", tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
 
     # This function initializes and creates the screen
     with tcod.console_init_root(

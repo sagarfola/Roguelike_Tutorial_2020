@@ -9,11 +9,8 @@ class GameMap:
         # assigns the width and height values in one line
         self.width, self.height = width, height
 
-        # Creates a 2D array
-        self.tiles = np.full((width, height), fill_value=tile_types.floor, order="F")
-
-        # Creates a small room
-        self.tiles[30:33, 22] = tile_types.wall
+        # Creates a 2D array filled with wall tiles
+        self.tiles = np.full((width, height), fill_value=tile_types.wall, order="F")
 
     # Keeps players inside the map
     def in_bounds(self, x: int, y: int) -> bool:

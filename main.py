@@ -1,66 +1,51 @@
 import tcod
 
-from actions import Action, ActionType
-from input_handlers import handle_keys
+from engine import Engine
+from entity import Entity
+from game_map import GameMap
+from input_handlers import EventHandler
 
 
-def main():
+def main() -> None:
     # Variables for screen dimensions
-    screen_width: int = 80
-    screen_height: int = 50
+    screen_width = 80
+    screen_height = 50
 
-    # Player coordinate data
-    player_x: int = int(screen_width/2)
-    player_y: int = int(screen_height/2)
+    map_width = 80
+    map_height = 45
 
     # Sets the custom font based on the file
-    tcod.console_set_custom_font("data/arial10x10.png", tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
+    tileset = tcod.tileset.load_tilesheet("data/dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
+
+    # Use this variable to accept and process events
+    event_handler = EventHandler()
+
+    player = Entity(int(screen_width / 2), int(screen_height/2), "@", (255, 255, 255))
+    npc = Entity(int(screen_width / 2), int(screen_height/2), "@", (255, 255, 0))
+    entities = {npc, player}
+
+    game_map = GameMap(map_width, map_height)
+
+    engine = Engine(entities=entities, event_handler=event_handler, game_map=game_map, player=player)
 
     # This function initializes and creates the screen
-    with tcod.console_init_root(
-        w=screen_width,
-        h=screen_height,
+    with tcod.context.new_terminal(
+        screen_width,
+        screen_height,
+        tileset=tileset,
         title="Yet Another Roguelike Tutorial",
-        order="F",  # Allows the order of coordinates to be [x, y] vs [y, x]
         vsync=True
-    ) as root_console:
+    ) as context:
+        # Order "F" means coordinates are x, y instead of y, x
+        # Creates the console that we will be drawing to
+        root_console = tcod.Console(screen_width, screen_height, order="F")
         # This is the game loop!
         while True:
-            # Printing a character on the screen at position 1,1
-            root_console.print(x=player_x, y=player_y, string="@")
+            engine.render(console=root_console, context=context)
 
-            # Flush updates the screen to print the character
-            tcod.console_flush()
+            events = tcod.event.wait()
 
-            # clears the console to refresh the screeny
-            root_console.clear()
-
-            # Allows the program to close gracefully by pressing the red x in the corner
-            for event in tcod.event.wait():
-
-                # Quit the game
-                if event.type == "QUIT":
-                    raise SystemExit()
-
-                # if the event is a keystroke, it will analyze
-                # the key stroke and pass the event.sym as the key argument
-                if event.type == "KEYDOWN":
-                    action: [Action, None] = handle_keys(event.sym)
-
-                    if action is None:
-                        continue
-
-                    action_type: ActionType = action.action_type
-
-                    if action_type == ActionType.MOVEMENT:
-                        dx: int = action.kwargs.get("dx", 0)
-                        dy: int = action.kwargs.get("dy", 0)
-
-                        player_x += dx
-                        player_y += dy
-
-                    elif action_type == ActionType.ESCAPE:
-                        raise SystemExit()
+            engine.handle_events(events)
 
 
 # When you run the script, it will run everything based on the

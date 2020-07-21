@@ -9,7 +9,7 @@ from game_map import GameMap
 import tile_types
 
 if TYPE_CHECKING:
-    from entity import Entity
+    from entity import Engine
 
 
 class RectangularRoom:
@@ -40,6 +40,7 @@ class RectangularRoom:
             and self.y2 >= other.y1
         )
 
+
 def place_entities(
         room: RectangularRoom, dungeon: GameMap, maximum_monsters: int,
 ) -> None:
@@ -54,6 +55,7 @@ def place_entities(
                 entity_factories.goblin.spawn(dungeon, x, y)
             else:
                 entity_factories.troll.spawn(dungeon, x, y)
+
 
 def tunnel_between(
         start: Tuple[int, int], end: Tuple[int, int]
@@ -84,10 +86,12 @@ def generate_dungeon(
         map_width: int,
         map_height:int,
         max_monsters_per_room: int,
-        player: Entity,
+        engine: Engine,
 ) -> GameMap:
     """Generate a new dungeon map"""
-    dungeon = GameMap(map_width, map_height, entities=[player])
+
+    player = engine.player
+    dungeon = GameMap(engine, map_width, map_height, entities=[player])
 
     rooms: List[RectangularRoom] = []
 
@@ -113,7 +117,7 @@ def generate_dungeon(
 
         if len(rooms) == 0:
             # The first room, where the player starts
-            player.x, player.y = new_room.center
+            player.place(*new_room.center, dungeon)
         else:  # All rooms after the first
             # Dig out a tunnel between this room and the previous one
             for x, y in tunnel_between(rooms[-1].center, new_room.center):

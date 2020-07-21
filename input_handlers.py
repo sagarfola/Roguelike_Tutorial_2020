@@ -9,6 +9,7 @@ from actions import Action, BumpAction, EscapeAction
 if TYPE_CHECKING:
     from engine import Engine
 
+
 class EventHandler(tcod.event.EventDispatch[Action]):
     def __init__(self, engine: Engine):
         self.engine = engine
@@ -54,7 +55,7 @@ class EventHandler(tcod.event.EventDispatch[Action]):
             action = BumpAction(player, dx=1, dy=1)
 
         elif key == tcod.event.K_ESCAPE:
-            action = EscapeAction()
+            action = EscapeAction(player)
 
         # No valid key was pressed
         return action
